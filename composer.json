@@ -1,0 +1,40 @@
+{
+    "name": "noem/simple-website-example",
+    "description": "Demo repository for a very simple website built with the Noem framework",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "noem/framework-module": "dev-main",
+        "noem/http-module": "dev-main",
+        "noem/composer-plugin": "dev-main"
+    },
+    "require-dev": {
+        "noem/integration-test": "dev-main",
+        "phpunit/phpunit": "10.0.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Noem\\SimpleWebsiteExample\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "noem/*": "source",
+            "*": "dist"
+        }
+    },
+    "extra": {
+        "noem": {
+            "factories": "factories.php",
+            "extensions": "extensions.php"
+        }
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Biont/event-dispatcher"
+        }
+    ]
+}
