@@ -11,7 +11,7 @@
     },
     "require-dev": {
         "noem/integration-test": "dev-main",
-        "phpunit/phpunit": "10.0.x-dev"
+        "phpunit/phpunit": ">=9.5.9"
     },
     "autoload": {
         "psr-4": {
@@ -31,6 +31,7 @@
         }
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "repositories": [
         {
             "type": "vcs",
