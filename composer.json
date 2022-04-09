@@ -22,6 +22,9 @@
         "preferred-install": {
             "noem/*": "source",
             "*": "dist"
+        },
+        "allow-plugins": {
+            "noem/composer-plugin": true
         }
     },
     "extra": {

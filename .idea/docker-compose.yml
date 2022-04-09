@@ -1,128 +1,165 @@
-
+name: ddev-noem-simple-website-example
 networks:
-  default:
+  ddev_default:
     external: true
     name: ddev_default
+  default:
+    name: ddev-noem-simple-website-example_default
 services:
   db:
     build:
       args:
-        BASE_IMAGE: drud/ddev-dbserver-mariadb-10.3:v1.17.7
-        gid: '1000'
-        uid: '1000'
+        BASE_IMAGE: drud/ddev-dbserver-mariadb-10.3:v1.19.0
+        gid: "1000"
+        uid: "1000"
         username: biont
-      context: /home/biont/webdev/noem-simple-website-example/.ddev/db-build
-      dockerfile: ../.dbimageBuild/Dockerfile
-    command: ''
+      context: /home/biont/webdev/simple-website-example/.ddev/.dbimageBuild
+      dockerfile: Dockerfile
     container_name: ddev-noem-simple-website-example-db
     environment:
-      COLUMNS: '230'
+      COLUMNS: "80"
       DDEV_HOSTNAME: noem-simple-website-example.ddev.site
-      DDEV_PHP_VERSION: '8.0'
-      DDEV_PRIMARY_URL: https://noem-simple-website-example.ddev.site
+      DDEV_PHP_VERSION: "8.0"
+      DDEV_PRIMARY_URL: http://noem-simple-website-example.ddev.site
       DDEV_PROJECT: noem-simple-website-example
       DDEV_PROJECT_TYPE: php
-      DDEV_ROUTER_HTTPS_PORT: '443'
-      DDEV_ROUTER_HTTP_PORT: '80'
+      DDEV_ROUTER_HTTP_PORT: "80"
+      DDEV_ROUTER_HTTPS_PORT: "443"
       DDEV_SITENAME: noem-simple-website-example
       DDEV_TLD: ddev.site
       DOCKER_IP: 127.0.0.1
       HOST_DOCKER_INTERNAL_IP: 172.17.0.1
       IS_DDEV_PROJECT: "true"
-      LINES: '50'
-      TZ: ''
+      LINES: "24"
+      MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/noem-simple-website-example-db/mysql_history
+      MYSQL_PWD: db
+      PGDATABASE: db
+      PGHOST: localhost
+      PGPASSWORD: db
+      PGUSER: db
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: db
+      POSTGRES_USER: db
+      TZ: ""
     healthcheck:
       interval: 1s
       retries: 120
-      start_period: 2m
-      timeout: 2m
+      start_period: 2m0s
+      timeout: 2m0s
     hostname: noem-simple-website-example-db
-    image: drud/ddev-dbserver-mariadb-10.3:v1.17.7-noem-simple-website-example-built
+    image: drud/ddev-dbserver-mariadb-10.3:v1.19.0-noem-simple-website-example-built
     labels:
       com.ddev.app-type: php
-      com.ddev.approot: /home/biont/webdev/noem-simple-website-example
+      com.ddev.approot: /home/biont/webdev/simple-website-example
       com.ddev.platform: ddev
       com.ddev.site-name: noem-simple-website-example
+    networks:
+      ddev_default: null
+      default: null
     ports:
-    - 127.0.0.1:49211:3306/tcp
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      published: "49155"
+      target: 3306
     restart: "no"
-    stop_grace_period: 60s
+    stop_grace_period: 1m0s
     user: 1000:1000
     volumes:
-    - source: mariadb-database
+    - source: database
       target: /var/lib/mysql
       type: volume
       volume:
         nocopy: true
-    - source: /home/biont/webdev/noem-simple-website-example/.ddev
+    - bind:
+        create_host_path: true
+      source: /home/biont/webdev/simple-website-example/.ddev
       target: /mnt/ddev_config
       type: bind
-    - ddev-global-cache:/mnt/ddev-global-cache:rw
+    - bind:
+        create_host_path: true
+      source: /home/biont/webdev/simple-website-example/.ddev/db_snapshots
+      target: /mnt/snapshots
+      type: bind
+    - source: ddev-global-cache
+      target: /mnt/ddev-global-cache
+      type: volume
+      volume: {}
+    working_dir: /home/biont
   dba:
     container_name: ddev-noem-simple-website-example-dba
     environment:
-      HTTPS_EXPOSE: 8037:8036
       HTTP_EXPOSE: 8036:8036
+      HTTPS_EXPOSE: 8037:8036
       PMA_PASSWORD: root
       PMA_USER: root
-      TZ: ''
+      TZ: ""
       UPLOAD_LIMIT: 1024M
       VIRTUAL_HOST: noem-simple-website-example.ddev.site
+    expose:
+    - "80"
     healthcheck:
-      interval: 2m
+      interval: 2m0s
       retries: 1
       timeout: 2s
     hostname: noem-simple-website-example-dba
     image: phpmyadmin:5
     labels:
       com.ddev.app-type: php
-      com.ddev.approot: /home/biont/webdev/noem-simple-website-example
+      com.ddev.approot: /home/biont/webdev/simple-website-example
       com.ddev.platform: ddev
       com.ddev.site-name: noem-simple-website-example
-    links:
-    - db:db
-    ports:
-    - target: 80
+    networks:
+      ddev_default: null
+      default: null
     restart: "no"
+    working_dir: /root
   web:
     build:
       args:
-        BASE_IMAGE: drud/ddev-webserver:v1.17.7
-        gid: '1000'
-        uid: '1000'
+        BASE_IMAGE: drud/ddev-webserver:v1.19.0-1
+        gid: "1000"
+        uid: "1000"
         username: biont
-      context: /home/biont/webdev/noem-simple-website-example/.ddev/web-build
-      dockerfile: ../.webimageBuild/Dockerfile
+      context: /home/biont/webdev/simple-website-example/.ddev/.webimageBuild
+      dockerfile: Dockerfile
     cap_add:
     - SYS_PTRACE
     container_name: ddev-noem-simple-website-example-web
     environment:
-      COLUMNS: '230'
-      DDEV_DOCROOT: ''
-      DDEV_FILES_DIR: /var/www/html
+      COLUMNS: "80"
+      DDEV_DOCROOT: ""
+      DDEV_FILES_DIR: ""
       DDEV_HOSTNAME: noem-simple-website-example.ddev.site
-      DDEV_PHP_VERSION: '8.0'
-      DDEV_PRIMARY_URL: https://noem-simple-website-example.ddev.site
+      DDEV_PHP_VERSION: "8.0"
+      DDEV_PRIMARY_URL: http://noem-simple-website-example.ddev.site
       DDEV_PROJECT: noem-simple-website-example
       DDEV_PROJECT_TYPE: php
-      DDEV_ROUTER_HTTPS_PORT: '443'
-      DDEV_ROUTER_HTTP_PORT: '80'
+      DDEV_ROUTER_HTTP_PORT: "80"
+      DDEV_ROUTER_HTTPS_PORT: "443"
       DDEV_SITENAME: noem-simple-website-example
       DDEV_TLD: ddev.site
       DDEV_WEBSERVER_TYPE: nginx-fpm
       DDEV_XDEBUG_ENABLED: "false"
       DEPLOY_NAME: local
       DOCKER_IP: 127.0.0.1
-      DOCROOT: ''
-      DRUSH_ALLOW_XDEBUG: '1'
-      DRUSH_OPTIONS_URI: https://noem-simple-website-example.ddev.site
+      DOCROOT: ""
+      DRUSH_ALLOW_XDEBUG: "1"
+      DRUSH_OPTIONS_URI: http://noem-simple-website-example.ddev.site
       HOST_DOCKER_INTERNAL_IP: 172.17.0.1
-      HTTPS_EXPOSE: 443:80,8026:8025
       HTTP_EXPOSE: 80:80,8025:8025
+      HTTPS_EXPOSE: 443:80,8026:8025
       IS_DDEV_PROJECT: "true"
-      LINES: '50'
+      LINES: "24"
+      MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/noem-simple-website-example-web/mysql_history
+      MYSQL_PWD: db
+      PGDATABASE: db
+      PGHOST: db
+      PGPASSWORD: db
+      PGUSER: db
+      PHP_IDE_CONFIG: serverName=noem-simple-website-example.ddev.site
       SSH_AUTH_SOCK: /home/.ssh-agent/socket
-      TZ: ''
+      TZ: ""
       VIRTUAL_HOST: noem-simple-website-example.ddev.site
     external_links:
     - ddev-router:noem-simple-website-example.ddev.site
@@ -131,36 +168,62 @@ services:
     healthcheck:
       interval: 1s
       retries: 120
-      start_period: 2m
-      timeout: 2m
+      start_period: 2m0s
+      timeout: 2m0s
     hostname: noem-simple-website-example-web
-    image: drud/ddev-webserver:v1.17.7-noem-simple-website-example-built
+    image: drud/ddev-webserver:v1.19.0-1-noem-simple-website-example-built
     labels:
       com.ddev.app-type: php
-      com.ddev.approot: /home/biont/webdev/noem-simple-website-example
+      com.ddev.approot: /home/biont/webdev/simple-website-example
       com.ddev.platform: ddev
       com.ddev.site-name: noem-simple-website-example
-    links:
-    - db:db
-    ports: []
+    networks:
+      ddev_default: null
+      default: null
+    ports:
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      target: 80
+    - host_ip: 127.0.0.1
+      mode: ingress
+      protocol: tcp
+      target: 443
     restart: "no"
     user: 1000:1000
     volumes:
     - consistency: cached
-      source: /home/biont/webdev/noem-simple-website-example
+      source: ../
       target: /var/www/html
       type: bind
-    - /home/biont/webdev/noem-simple-website-example/.ddev:/mnt/ddev_config:ro
-    - /home/biont/webdev/noem-simple-website-example/.ddev/nginx_full:/etc/nginx/sites-enabled:ro
-    - /home/biont/webdev/noem-simple-website-example/.ddev/apache:/etc/apache2/sites-enabled:ro
-    - ddev-global-cache:/mnt/ddev-global-cache:rw
-    - ddev-ssh-agent_socket_dir:/home/.ssh-agent:rw
-version: '3.6'
+    - bind:
+        create_host_path: true
+      read_only: true
+      source: /home/biont/webdev/simple-website-example/.ddev
+      target: /mnt/ddev_config
+      type: bind
+    - bind:
+        create_host_path: true
+      read_only: true
+      source: /home/biont/webdev/simple-website-example/.ddev/xhprof
+      target: /usr/local/bin/xhprof
+      type: bind
+    - source: ddev-global-cache
+      target: /mnt/ddev-global-cache
+      type: volume
+      volume: {}
+    - source: ddev-ssh-agent_socket_dir
+      target: /home/.ssh-agent
+      type: volume
+      volume: {}
+    working_dir: /var/www/html/
 volumes:
+  database:
+    external: true
+    name: noem-simple-website-example-mariadb
   ddev-global-cache:
+    external: true
     name: ddev-global-cache
   ddev-ssh-agent_socket_dir:
     external: true
     name: ddev-ssh-agent_socket_dir
-  mariadb-database:
-    name: noem-simple-website-example-mariadb

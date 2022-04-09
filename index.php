@@ -9,7 +9,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use function Noem\Framework\bootstrap;
 
 require 'vendor/autoload.php';
-
 bootstrap(...require 'vendor/noem.php')(function (
     ContainerInterface $c,
     EventDispatcherInterface $d,
@@ -18,5 +17,5 @@ bootstrap(...require 'vendor/noem.php')(function (
     $requestEvent = $c->get('http.request.event');
     $d->dispatch($requestEvent);
     $emitter->emit($requestEvent->response());
-});
+})();
 
