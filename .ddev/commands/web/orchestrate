@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Sets up the WordPress environment for acceptance testing
+## Usage: orchestrate
+## Example: "ddev orchestrate"
+
+echo 'This is just a dummy script'

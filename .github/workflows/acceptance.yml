@@ -1,0 +1,20 @@
+name: Acceptance
+
+on:
+  workflow_dispatch:
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    env:
+      DB_NAME: db_test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jonaseberle/github-action-setup-ddev@v1
+      - name: Setup App env
+        run: cp .env.example .env
+      - name: Install dependencies
+        run: ddev composer install
+      - name: Run acceptance tests
+        shell: 'script -q -e -c "bash {0}"'
+        run: bin/acceptance.sh -d

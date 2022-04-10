@@ -1,0 +1,21 @@
+name: Package updates
+
+on:
+  workflow_dispatch:
+
+jobs:
+  composer-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+      - uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: "highest"
+          composer-options: "--prefer-dist --no-install --no-plugins --no-scripts"
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update composer dependencies
+          file_pattern: composer.lock

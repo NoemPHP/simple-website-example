@@ -60,7 +60,7 @@ services:
     - host_ip: 127.0.0.1
       mode: ingress
       protocol: tcp
-      published: "49155"
+      published: "49276"
       target: 3306
     restart: "no"
     stop_grace_period: 1m0s
@@ -114,6 +114,20 @@ services:
       default: null
     restart: "no"
     working_dir: /root
+  selenium:
+    container_name: ddev-noem-simple-website-example-chrome
+    environment:
+      HTTP_EXPOSE: "4444"
+      VIRTUAL_HOST: noem-simple-website-example.ddev.site
+    external_links:
+    - ddev-router:noem-simple-website-example.ddev.site
+    image: selenium/standalone-chrome:3.12
+    labels:
+      com.ddev.approot: /home/biont/webdev/simple-website-example
+      com.ddev.site-name: noem-simple-website-example
+    networks:
+      ddev_default: null
+      default: null
   web:
     build:
       args:
