@@ -16,7 +16,7 @@ return [
     <body>
         <h1>Hello World, Noem here</h1>
         <ul>
-            <li><a href="/Cats">Cats</a></li>
+            <li><a id="cats" href="/Cats">Cats</a></li>
             <li><a href="/Dogs">Dogs</a></li>
             <li><a href="/Turtles">Turtles</a></li>
             <li><a href="/Goldfish">Goldfish</a></li>
