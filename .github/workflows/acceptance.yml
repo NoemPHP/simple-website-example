@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: jonaseberle/github-action-setup-ddev@v1
-      - name: Setup App env
-        run: cp .env.example .env
       - name: Install dependencies
         run: ddev composer install
       - name: Run acceptance tests
