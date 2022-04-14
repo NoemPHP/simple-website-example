@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PSR-12">
-    <file>./src</file>
+    <file>./extensions.php</file>
+    <file>./factories.php</file>
     <rule ref="PSR12"/>
 </ruleset>
