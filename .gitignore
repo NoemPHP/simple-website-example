@@ -1,3 +1,7 @@
+#Noem
+/tests/_data/dump.sql
+.idea/docker-compose.yml
+
 # PHP
 
 composer.phar

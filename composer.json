@@ -7,7 +7,8 @@
         "php": "^8.0",
         "noem/framework-module": "dev-main",
         "noem/http-module": "dev-main",
-        "noem/composer-plugin": "dev-main"
+        "noem/composer-plugin": "dev-main",
+        "noem/composer-file-embed": "dev-master"
     },
     "require-dev": {
         "noem/integration-test": "dev-main",
@@ -26,7 +27,8 @@
             "*": "dist"
         },
         "allow-plugins": {
-            "noem/composer-plugin": true
+            "noem/composer-plugin": true,
+            "noem/composer-file-embed": true
         }
     },
     "extra": {
