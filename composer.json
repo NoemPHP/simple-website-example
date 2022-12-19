@@ -16,7 +16,7 @@
         "noem/integration-test": "dev-main",
         "phpunit/phpunit": ">=9.5.9",
         "squizlabs/php_codesniffer": "^3.6",
-        "vimeo/psalm": "^4.22"
+        "vimeo/psalm": "^5.3"
     },
     "autoload": {
         "psr-4": {
